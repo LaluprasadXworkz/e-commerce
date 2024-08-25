@@ -1,0 +1,45 @@
+spring:
+  datasource:
+    url : jdbc:ucanaccess://C:/Users/lalup/OneDrive/Desktop/netzwerk/Data.accdb
+    driver-class-name: net.ucanaccess.jdbc.UcanaccessDriver
+    username: ""
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect
+  profiles:
+    active: dev
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    cache: false
+
+logging:
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+  file:
+    name: ../opt/tomcat1/logs/Ecommerce-Dev-Logs/Ecommerce.log
+    max-size: 10MB
+    total-size-cap: 10MB
+
+    max-history: '1'
+    clean-history-on-start: 'true'
+  level:
+    root: INFO
+    com:
+      netzwerk:
+        ecommerce: INFO
+    org:
+      hibernate:
+        SQL: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    rolling-file-name: Ecommerce-%d{yyyy-MM-dd}.%i.log

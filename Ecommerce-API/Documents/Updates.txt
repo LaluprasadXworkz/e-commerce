@@ -1,0 +1,31 @@
+Create Jira Project : netzwerk
+Create a new repo : netzwerk-ecom 
+Create devnetzwerk@gmail.com
+Local DB : 
+
+
+
+===
+spring rest coontroller 
+post man
+spring data jpa 
+spring boot validators 
+custom validator
+spring dev tools  
+spring swagger
+
+
+pagination
+encryption/decryption
+profiles
+sl4j
+
+
+====
+
+Jquery : validations
+Ajax call 
+audit column's
+email integration
+
+

@@ -1,0 +1,11 @@
+@media (max-width: 768px) {
+    .grid {
+        display: block;
+    }
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
