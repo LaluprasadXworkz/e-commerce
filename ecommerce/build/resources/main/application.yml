@@ -1,0 +1,68 @@
+spring:
+  profiles:
+    active: dev
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    cache: false
+
+  #  datasource:
+  #    url: jdbc:ucanaccess://C://Users//HP//OneDrive//Documents//Database3.accdb
+  #    driver-class-name: net.ucanaccess.jdbc.UcanaccessDriver
+  jpa:
+    hibernate:
+#      dialect: org.hibernate.dialect.HSQLDialect
+#      ddl-auto: none
+#      dialect: org.hibernate.dialect.H2Dialect # Use H2 dialect if Hibernate requires one
+#    properties:
+#      hibernate:
+
+#  application:
+#    name: ecommerce
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/ecomm_dev
+#    username: root
+#    password: X-workZodc@123
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  jpa:
+#    #    properties:
+#    hibernate:
+#      dialect: org.hibernate.dialect.MySQLDialect
+#      ddl-auto: create
+#
+#logging:
+#  file:
+#    name: ../ecommerce/log/Ecomm_log.log
+#  level:
+#    org:
+#      springframework:
+#        web: INFO
+#      hibernate: ERROR
+#    net:
+#      guides: DEBUG
+
+logging:
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+  file:
+    name: ../opt/tomcat1/logs/Ecommerce-Dev-Logs/Ecommerce.log
+    max-size: 10MB
+    total-size-cap: 10MB
+
+    max-history: '1'
+    clean-history-on-start: 'true'
+  level:
+    root: INFO
+    com:
+      netzwerk:
+        ecommerce: INFO
+    org:
+      hibernate:
+        SQL: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    rolling-file-name: Ecommerce-%d{yyyy-MM-dd}.%i.log

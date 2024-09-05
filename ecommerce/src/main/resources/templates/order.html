@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inventory</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+            integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+
+<body>
+<div th:replace="fragments/navbar :: barNav"></div>
+<div class="d-flex">
+    <div th:replace="fragments/sidebar :: barSide"></div>
+
+    <div class="container">
+        <h3 class="my-4 text-center">Order</h3>
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-primary" th:href="@{/order/viewOrder}"
+            >View Order</a
+            >
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="w-50">
+                <form
+                        id="orderForm"
+                        th:action="@{/order/saveOrderDto}"
+                        th:object="${order}"
+                        method="post"
+                >
+                    <div class="mb-3">
+                        <label for="make" class="form-label">Make</label>
+                        <select
+                                class="form-select form-select-sm"
+                                id="make"
+                                name="make"
+                                th:field="*{make}"
+                        >
+                            <option value="" selected>Select Make</option>
+                            <option
+                                    th:each="make : ${makes}"
+                                    th:value="${make}"
+                                    th:text="${make}"
+                            ></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="model" class="form-label">Model</label>
+                        <select
+                                class="form-select form-select-sm"
+                                id="model"
+                                name="model"
+                                th:field="*{model}"
+                        >
+                            <option value="" selected>Select Model</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="productcode" class="form-label">Product Code</label>
+                        <select
+                                class="form-select form-select-sm"
+                                id="productcode"
+                                name="productCode"
+                                th:field="*{productCode}"
+                        >
+                            <option value="" selected>Select Product Code</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="ratePerItem" class="form-label">Price</label>
+                        <input
+                                type="text"
+                                class="form-control form-control-sm"
+                                id="ratePerItem"
+                                th:field="*{ratePerItem}"
+                                readonly
+                        />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="stockInHand" class="form-label"
+                        >Stock in Hand</label
+                        >
+                        <input
+                                type="text"
+                                class="form-control form-control-sm"
+                                id="stockInHand"
+                                th:field="*{stockInHand}"
+                                readonly
+                        />
+                    </div>
+
+                    <input type="hidden" id="hiddenQuantity" name="quantity" />
+                    <input type="hidden" id="hiddenTotalPrice" name="totalPrice" />
+
+                    <div class="mb-3 text-center">
+                        <button
+                                type="button"
+                                class="btn btn-primary btn-sm"
+                                data-bs-toggle="modal"
+                                data-bs-target="#buyModal"
+                        >
+                            Order Now
+                        </button>
+                        <button type="reset" class="btn btn-secondary btn-sm">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div
+        class="modal fade"
+        id="buyModal"
+        tabindex="-1"
+        aria-labelledby="buyModalLabel"
+        aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h5 class="modal-title" id="buyModalLabel">Confirm Purchase</h5>
+                <button
+                        type="button"
+                        class="btn-close position-absolute end-0 me-3"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input
+                            type="number"
+                            class="form-control"
+                            id="quantity"
+                            placeholder="Enter Quantity"
+                            min="1"
+                            value="1"
+                            required
+                    />
+                </div>
+                <div class="mb-3">
+                    <label for="totalPrice" class="form-label">Total Price</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="totalPrice"
+                            readonly
+                    />
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button
+                        type="button"
+                        class="btn btn-primary btn-sm"
+                        onclick="submitOrder()"
+                >
+                    Buy
+                </button>
+                <button
+                        type="button"
+                        class="btn btn-secondary btn-sm"
+                        data-bs-dismiss="modal"
+                >
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footerBar"></div>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+
+<script
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"
+></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"
+></script>
+</body>
+</html>

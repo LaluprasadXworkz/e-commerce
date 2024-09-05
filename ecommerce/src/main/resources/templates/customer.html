@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+            integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <style>
+        .error {
+          color: red;
+          font-size: 0.875em;
+          display: block;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="fragments/navbar :: barNav"></div>
+<div class="d-flex">
+    <div th:replace="fragments/sidebar :: barSide"></div>
+
+    <div class="container" style="min-height: 80vh">
+        <h3 class="text-center">Customer Details</h3>
+        <a
+                class="nav-link text-dark d-flex justify-content-end"
+                th:href="@{/customer/toView}"
+        >
+            <button class="btn btn-primary">Back</button>
+        </a>
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="w-75">
+                <form
+                        id="customerForm"
+                        th:action="@{/customer/saveCustomer}"
+                        th:object="${customer}"
+                        onsubmit="return validateForm()"
+                        method="post"
+                        class="row g-3"
+                >
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input
+                                    type="text"
+                                    id="customerName"
+                                    th:field="*{customerName}"
+                                    class="form-control"
+                                    placeholder="Customer Name"
+                                    onblur="customerNameCheck()"
+                            />
+                            <span class="error" id="nameError"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input
+                                    type="email"
+                                    id="customerEmailId"
+                                    th:field="*{customerEmailId}"
+                                    class="form-control"
+                                    placeholder="Email ID"
+                                    onblur="customerEmailIdCheck()"
+                            />
+                            <span class="error" id="emailError"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input
+                                    type="text"
+                                    id="contactNumber"
+                                    th:field="*{contactNumber}"
+                                    class="form-control"
+                                    placeholder="Contact Number"
+                            />
+                            <span class="error" id="contactError"></span>
+                            <!--                        onblur="contactNumberCheck()"-->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input
+                                    type="text"
+                                    id="gstNumber"
+                                    th:field="*{gstNumber}"
+                                    class="form-control"
+                                    placeholder="GST Number"
+                            />
+                            <span class="error" id="gstError"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <select
+                                    id="country"
+                                    th:field="*{country}"
+                                    class="form-select"
+                                    onchange="loadStates()"
+                            >
+                                <option value="">Select Country</option>
+                            </select>
+                            <span class="error" id="countryError"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input
+                                    type="text"
+                                    id="pinCode"
+                                    th:field="*{pinCode}"
+                                    class="form-control"
+                                    placeholder="Pin Code"
+                            />
+                            <span class="error" id="pinCodeError"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input
+                                    type="text"
+                                    id="mailingAddress"
+                                    th:field="*{mailingAddress}"
+                                    class="form-control"
+                                    placeholder="Mailing Address"
+                            />
+                            <span class="error" id="mailingAddressError"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <select id="state" th:field="*{state}" class="form-select">
+                                <option value="">Select State</option>
+                            </select>
+                            <span class="error" id="stateError"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input
+                                    type="text"
+                                    id="address1"
+                                    th:field="*{address1}"
+                                    class="form-control"
+                                    placeholder="Address Line 1"
+                            />
+                            <span class="error" id="address1Error"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input
+                                    type="text"
+                                    id="address2"
+                                    th:field="*{address2}"
+                                    class="form-control"
+                                    placeholder="Address Line 2"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input
+                                    type="text"
+                                    id="address3"
+                                    th:field="*{address3}"
+                                    class="form-control"
+                                    placeholder="Address Line 3"
+                            />
+                        </div>
+                    </div>
+                    <div class="col-12 text-center">
+                        <button type="submit" class="btn btn-primary">Add</button>
+                        <button
+                                type="reset"
+                                class="btn btn-secondary"
+                                onclick="clearForm()"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footerBar"></div>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+<script type="text/javascript" th:src="@{/js/customer.js}"></script>
+
+<script
+        src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"
+></script>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"
+></script>
+</body>
+</html>
